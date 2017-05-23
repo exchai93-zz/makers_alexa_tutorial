@@ -15,7 +15,10 @@ post '/' do
 
 end
 
-
+def fetch_number_fact(number, fact_type)
+  number_facts_uri = URI("http://numbersapi.com/#{ number }/#{ fact_type }")
+  number_fact = Net::HTTP.get(number_facts_uri)
+end 
 # post '/' do
 #   {
 #    version: "1.0",
