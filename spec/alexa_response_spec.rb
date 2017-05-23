@@ -1,6 +1,6 @@
 require 'alexa/response'
 
-RSpec.describe Alexa::REsponse do
+RSpec.describe Alexa::Response do
   describe './build' do
     it 'returns a minimal JSON response' do
       minimal_response = {
@@ -13,8 +13,7 @@ RSpec.describe Alexa::REsponse do
         }
       }.to_json
 
-      expect(Alexa::Response.build).to eq
-minimal_response
+      expect(Alexa::Response.build).to eq minimal_response
     end
   end
 end
