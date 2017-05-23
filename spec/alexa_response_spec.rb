@@ -1,4 +1,5 @@
 require 'alexa/response'
+require 'alexa/request'
 
 RSpec.describe Alexa::Response do
   describe './build' do
@@ -29,5 +30,32 @@ RSpec.describe Alexa::Response do
 
       expect(Alexa::Response.build).to eq minimal_response
     end
+
+  describe '#slot_value' do
+    it 'returns the value for a specified slot' do
+      # sample of JSON taken from Service Simulator
+      request_json = {
+        "request": {
+          "type": "IntentRequest",
+          "intent": {
+            "name": "IntentName",
+          "slots": {
+            "SlotName": {
+              "name": "SlotName",
+              "value": "10"
+            }
+          }
+        }
+      }
+    }.to_json
+    # mock behaviour of incoming Sinatra request
+    # body method that yields a StringIO containing
+    # the JSON we are dealing with
+    sinatra_request = double("Sinatra::Request", body: StringIO.new(request_json))
+
+    expect(Alexa::Request.new(sinatra_request).slot_value("SlotName")).to eq "10"
+
+    end
+  end
 
 end
