@@ -4,11 +4,11 @@ require 'net/http'
 require 'lib/alexa/response'
 
 post '/' do
-  parsed_request = JSON.parse(request.body.read)
-  number = parsed_request["request"]["intent"]["slots"]["number"]["value"]
-  fact_type = parsed_request["request"]["intent"]["slots"]["FactType"]["value"]
+  alexa_request = Alexa::Request.new(request)
 
-  number_facts_uri = URI("http://numbersapi.com/#{ number }/#{ fact_type }")
+  number_facts_uri = URI("http://numbersapi.com/#{
+  alexa_request.slot_value("Number") }/#{
+  alexa_request.slot_value("FactType") }")
   number_fact = Net::HTTP.get(number_facts_uri)
 
   Alexa::Response.build(number_fact)
