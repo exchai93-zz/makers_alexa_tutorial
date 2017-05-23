@@ -3,7 +3,26 @@ require 'alexa/request'
 
 RSpec.describe Alexa::Response do
   describe './build' do
+    it 'returns a JSON response with session data if provided' do
+      expected_response = {
+        version: "1.0",
+        sessionAttributes: {
+          sessionKey: "Session Value"
+        },
+        response: {
+          outputSpeech: {
+            type: "PlainText",
+            text: "Hello World"
+          }
+        }
+      }.to_json
+
+      session_response = Alexa::Response.build("Hello World", { sessionKey:
+        "Session Value" })
+        expect(session_response).to eq expected_response
+      end
     end
+    
     it 'returns a JSON response with a custom string if provided' do
       expected_response = {
         version: "1.0",
@@ -17,6 +36,8 @@ RSpec.describe Alexa::Response do
 
       expect(Alexa::Response.build("Custom String")).to eq expected_response
     end
+
+
     it 'returns a minimal JSON response otherwise' do
       minimal_response = {
         version: "1.0",
@@ -57,5 +78,6 @@ RSpec.describe Alexa::Response do
 
     end
   end
+
 
 end
